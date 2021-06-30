@@ -1,1 +1,12 @@
-// TODO
+.container {
+  display: flex;
+  flex: 1;
+  padding-top: 70px;
+
+}
+.logoContainer {
+  margin: 0 auto;
+  width: 720px;
+  display: flex;
+  align-items: flex-start;
+}

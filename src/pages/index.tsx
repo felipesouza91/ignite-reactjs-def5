@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
-
+import { RiCalendarLine, RiUserLine } from 'react-icons/ri';
 import { getPrismicClient } from '../services/prismic';
-
+import { Header } from '../components/Header';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
@@ -24,13 +24,36 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-// export default function Home() {
-//   // TODO
-// }
+const Home: React.FC = () => {
+  return (
+    <>
+      <Header />
+      <div className={ styles.postContainer}>
+        <div>
+          <h2>Como utilizar hoocks</h2>
+          <p>Pensando em sincronização em vez de ciclos de vida.</p>
+          <div>
+            <div>
+              <RiCalendarLine size={20} />
+              <span>15 Mar 2021</span>
+            </div>
+            <div>
+              <RiUserLine size={20} />
+              <span>Felipe Souza Santana</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
+/* export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+  const postsResponse = await prismic.query('');
+  return {
+    props: {},
+  };
+}; */
 
-//   // TODO
-// };
+export default Home;
