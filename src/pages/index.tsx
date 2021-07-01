@@ -28,12 +28,12 @@ const Home: React.FC = () => {
   return (
     <>
       <Header />
-      <div className={ styles.postContainer}>
-        <div>
+      <div className={styles.postContainer}>
+        <div className={styles.post}>
           <h2>Como utilizar hoocks</h2>
           <p>Pensando em sincronização em vez de ciclos de vida.</p>
-          <div>
-            <div>
+          <div className={styles.infoContainer}>
+            <div className={styles.info}>
               <RiCalendarLine size={20} />
               <span>15 Mar 2021</span>
             </div>
@@ -43,6 +43,36 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className={styles.post}>
+          <h2>Como utilizar hoocks</h2>
+          <p>Pensando em sincronização em vez de ciclos de vida.</p>
+          <div className={styles.infoContainer}>
+            <div className={styles.info}>
+              <RiCalendarLine size={20} />
+              <span>15 Mar 2021</span>
+            </div>
+            <div>
+              <RiUserLine size={20} />
+              <span>Felipe Souza Santana</span>
+            </div>
+          </div>
+        </div>
+        <div className={styles.post}>
+          <h2>Como utilizar hoocks</h2>
+          <p>Pensando em sincronização em vez de ciclos de vida.</p>
+          <div className={styles.infoContainer}>
+            <div className={styles.info}>
+              <RiCalendarLine size={20} />
+              <span>15 Mar 2021</span>
+            </div>
+            <div>
+              <RiUserLine size={20} />
+              <span>Felipe Souza Santana</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="#">Carregar mais posts</a>
       </div>
     </>
   );
