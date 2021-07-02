@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-
+import Head from 'next/head';
+import Header from '../../components/Header';
 import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
@@ -27,7 +28,11 @@ interface PostProps {
 }
 
 const Post: React.FC = () => {
-  return <div />;
+  return (
+    <>
+      <Header />
+    </>
+  );
 };
 
 /* export const getStaticPaths: GetStaticPaths = async () => {
