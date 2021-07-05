@@ -72,7 +72,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <a href="#">Carregar mais posts</a>
+        <button type="button">Carregar mais posts</button>
       </div>
     </>
   );
