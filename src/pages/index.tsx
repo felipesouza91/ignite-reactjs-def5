@@ -1,9 +1,14 @@
 import { GetStaticProps } from 'next';
 import { RiCalendarLine, RiUserLine } from 'react-icons/ri';
+import Prismic from '@prismicio/client';
+import { RichText } from 'prismic-dom';
+import Link from 'next/link';
+import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 import Header from '../components/Header';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { formatDate } from '../utils/date-format';
 
 interface Post {
   uid?: string;
@@ -15,6 +20,10 @@ interface Post {
   };
 }
 
+interface IHomeProps {
+  posts: Post[];
+}
+
 interface PostPagination {
   next_page: string;
   results: Post[];
@@ -24,66 +33,84 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-const Home: React.FC = () => {
+const Home: React.FC<HomeProps> = ({ postsPagination }) => {
+  const [posts, setPosts] = useState<PostPagination>(postsPagination);
+  const handleLoadPosts = (): void => {
+    fetch(postsPagination.next_page)
+      .then(response => response.json())
+      .then(data => {
+        setPosts({
+          next_page: data.next_page,
+          results: data.results.map(item => ({
+            uid: item.uid,
+            first_publication_date: item.first_publication_date,
+            data: {
+              author: item.data.author,
+              title: item.data.title,
+              subtitle: item.data.subtitle,
+            },
+          })),
+        });
+      });
+  };
+
   return (
     <>
       <Header />
       <div className={styles.postContainer}>
-        <div className={styles.post}>
-          <h2>Como utilizar hoocks</h2>
-          <p>Pensando em sincronização em vez de ciclos de vida.</p>
-          <div className={styles.infoContainer}>
-            <div className={styles.info}>
-              <RiCalendarLine size={20} />
-              <span>15 Mar 2021</span>
+        {posts.results.map(post => (
+          <Link href={`/post/${post.uid}`} key={post.uid}>
+            <div className={styles.post}>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.subtitle}</p>
+              <div className={styles.infoContainer}>
+                <div className={styles.info}>
+                  <RiCalendarLine size={20} />
+                  <span>{formatDate(post.first_publication_date)}</span>
+                </div>
+                <div>
+                  <RiUserLine size={20} />
+                  <span>{post.data.author}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <RiUserLine size={20} />
-              <span>Felipe Souza Santana</span>
-            </div>
-          </div>
-        </div>
-        <div className={styles.post}>
-          <h2>Como utilizar hoocks</h2>
-          <p>Pensando em sincronização em vez de ciclos de vida.</p>
-          <div className={styles.infoContainer}>
-            <div className={styles.info}>
-              <RiCalendarLine size={20} />
-              <span>15 Mar 2021</span>
-            </div>
-            <div>
-              <RiUserLine size={20} />
-              <span>Felipe Souza Santana</span>
-            </div>
-          </div>
-        </div>
-        <div className={styles.post}>
-          <h2>Como utilizar hoocks</h2>
-          <p>Pensando em sincronização em vez de ciclos de vida.</p>
-          <div className={styles.infoContainer}>
-            <div className={styles.info}>
-              <RiCalendarLine size={20} />
-              <span>15 Mar 2021</span>
-            </div>
-            <div>
-              <RiUserLine size={20} />
-              <span>Felipe Souza Santana</span>
-            </div>
-          </div>
-        </div>
+          </Link>
+        ))}
 
-        <button type="button">Carregar mais posts</button>
+        {posts.next_page && (
+          <button onClick={() => handleLoadPosts()} type="button">
+            Carregar mais posts
+          </button>
+        )}
       </div>
     </>
   );
 };
 
-/* export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
-  const postsResponse = await prismic.query('');
+  const postsResponse = await prismic.query(
+    [Prismic.predicates.at('document.type', 'posts')],
+    { pageSize: 1 }
+  );
+  const results = postsResponse.results.map(item => ({
+    uid: item.uid,
+    first_publication_date: item.first_publication_date,
+    data: {
+      author: item.data.author,
+      title: item.data.title,
+      subtitle: item.data.subtitle,
+    },
+  }));
+
   return {
-    props: {},
+    props: {
+      postsPagination: {
+        results,
+        next_page: postsResponse.next_page,
+      },
+    },
   };
-}; */
+};
 
 export default Home;

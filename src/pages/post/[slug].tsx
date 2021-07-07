@@ -34,7 +34,7 @@ const Post: React.FC = () => {
       <Header />
       <div className={styles.container}>
         <div className={styles.banner}>
-          <Image src="/banner.png" alt="Banner" width="1200" height="400" />
+          <img src="/banner.png" alt="Banner" />
         </div>
         <div className={styles.content}>
           <h1>Criando um app CRA do zero</h1>
