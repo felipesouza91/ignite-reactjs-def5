@@ -1,7 +1,6 @@
 import { GetStaticProps } from 'next';
 import { RiCalendarLine, RiUserLine } from 'react-icons/ri';
 import Prismic from '@prismicio/client';
-import { RichText } from 'prismic-dom';
 import Link from 'next/link';
 import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';

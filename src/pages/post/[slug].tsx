@@ -1,12 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Head from 'next/head';
-import { RiCalendarLine, RiClockwiseLine, RiUserLine } from 'react-icons/ri';
-import Image from 'next/image';
+
+import { RiCalendarLine, RiTimeLine, RiUserLine } from 'react-icons/ri';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
+import { useRouter } from 'next/router';
 import Header from '../../components/Header';
 import { getPrismicClient } from '../../services/prismic';
-import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { formatDate } from '../../utils/date-format';
 
@@ -32,6 +31,19 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ post }) => {
+  const router = useRouter();
+
+  post.data.content.forEach(item => {
+    const heading = item.heading.split(' ').length;
+    const body = RichText.asHtml(item.body)
+      .replace(/(<([^\s>]+)>)/gi, ' ')
+      .trim()
+      .split(/\s+/).length;
+    console.log(`Size body ${body}`);
+  });
+  if (router.isFallback) {
+    return <div>Carregando...</div>;
+  }
   return (
     <>
       <Header />
@@ -51,11 +63,31 @@ const Post: React.FC<PostProps> = ({ post }) => {
               <span>{post.data.author}</span>
             </div>
             <div>
-              <RiClockwiseLine size={20} />
-              <span>4 min</span>
+              <RiTimeLine size={20} />
+              <span>
+                {`${Math.ceil(
+                  post.data.content.reduce((total, item) => {
+                    const heading = item.heading.split(' ').length;
+                    const body = RichText.asHtml(item.body).split(' ').length;
+                    return total + heading + body;
+                  }, 0) / 200
+                )} min`}
+              </span>
             </div>
           </div>
-          <div>{post.data.content.map(item => RichText.asHtml(item))}</div>
+          <div className={styles.dataContent}>
+            {post.data.content.map(item => (
+              <div key={item.heading}>
+                <h2>{item.heading}</h2>
+                <div
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={{
+                    __html: RichText.asHtml(item.body),
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
@@ -66,14 +98,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     [Prismic.predicates.at('document.type', 'posts')],
-    { pageSize: 1 }
+    { pageSize: 10 }
   );
   const paths = postsResponse.results.map(item => ({
     params: { slug: item.uid },
   }));
   return {
     paths,
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 
@@ -82,7 +114,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
-  console.log(response);
   return {
     props: {
       post: response,

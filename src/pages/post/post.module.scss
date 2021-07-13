@@ -12,6 +12,10 @@
   }
 }
 
+.time{
+  margin-left: 5px;
+}
+
 .content {
   max-width: 700px;
   margin: 80px auto;
@@ -34,5 +38,17 @@
     span {
       margin-left: 11px;
     }
+  }
+}
+
+.dataContent {
+  &:first-child {
+    margin-bottom: 10px;
+  }
+
+
+  p {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
