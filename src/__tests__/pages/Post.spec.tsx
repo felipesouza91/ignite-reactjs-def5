@@ -37,9 +37,15 @@ const mockedQueryReturn = {
   results: [
     {
       uid: 'como-utilizar-hooks',
+      data: {
+        title: 'como-utilizar-hooks',
+      },
     },
     {
       uid: 'criando-um-app-cra-do-zero',
+      data: {
+        title: 'criando-um-app-cra-do-zero',
+      },
     },
   ],
 };

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 import Header from '../components/Header';
-import commonStyles from '../styles/common.module.scss';
+
 import styles from './home.module.scss';
 import { formatDate } from '../utils/date-format';
 
@@ -17,10 +17,6 @@ interface Post {
     subtitle: string;
     author: string;
   };
-}
-
-interface IHomeProps {
-  posts: Post[];
 }
 
 interface PostPagination {
@@ -90,7 +86,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     [Prismic.predicates.at('document.type', 'posts')],
-    { pageSize: 1 }
+    { pageSize: 20 }
   );
   const results = postsResponse.results.map(item => ({
     uid: item.uid,

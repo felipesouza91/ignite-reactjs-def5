@@ -8,3 +8,7 @@ format(new Date(), "'Hoje é' eeee", {
 export const formatDate = (date: string): string => {
   return format(new Date(date), 'dd MMM yyyy', { locale: ptBR });
 };
+
+export const formatDateWitHours = (date): string => {
+  return format(new Date(date), "dd MMM yyyy, 'as ' HH:mm", { locale: ptBR });
+};

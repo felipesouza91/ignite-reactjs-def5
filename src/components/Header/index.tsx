@@ -7,8 +7,10 @@ const Header: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logoContainer}>
-        <Link href="/">
-          <Image src="/Logo.svg" alt="logo" width="239" height="26" />
+        <Link href="/" passHref>
+          <div>
+            <Image src="/Logo.svg" alt="logo" width="239" height="26" />
+          </div>
         </Link>
       </div>
     </div>
