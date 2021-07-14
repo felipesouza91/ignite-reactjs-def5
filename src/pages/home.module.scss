@@ -1,5 +1,6 @@
 .postContainer {
   padding-top: 60px;
+  margin-bottom: 18px;
   margin: 0 auto;
   width: 720px;
   display: flex;
@@ -62,4 +63,9 @@
       margin-left: 11px;
     }
   }
+}
+
+.button {
+  border: 1px solid #ddd;
+  padding: 10px;
 }
